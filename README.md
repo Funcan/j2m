@@ -1,5 +1,5 @@
-[![GoDoc](https://godoc.org/github.com/StevenACoffman/j2m?status.svg)](https://godoc.org/github.com/StevenACoffman/j2m)
-[![GoReportcard](https://goreportcard.com/badge/github.com/StevenACoffman/j2m?status.svg)](https://goreportcard.com/report/github.com/StevenACoffman/j2m)
+[![GoDoc](https://godoc.org/github.com/Funcan/j2m?status.svg)](https://godoc.org/github.com/Funcan/j2m)
+[![GoReportcard](https://goreportcard.com/badge/github.com/Funcan/j2m?status.svg)](https://goreportcard.com/report/github.com/Funcan/j2m)
 
 # jira-to-md
 

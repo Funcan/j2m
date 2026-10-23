@@ -4,7 +4,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/StevenACoffman/j2m"
+	"github.com/Funcan/j2m"
 	"io/ioutil"
 	"os"
 )

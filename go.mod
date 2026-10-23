@@ -1,3 +1,3 @@
-module github.com/StevenACoffman/j2m
+module github.com/Funcan/j2m
 
 go 1.12
