@@ -61,6 +61,8 @@ func TestMDToJira(t *testing.T) {
 		{"named link url with italic stars", "[Page](https://example.com/*a*/b)", "[Page|https://example.com/*a*/b]"},
 		{"formatting next to url", "see https://example.com/a*b and *c* here", "see https://example.com/a*b and _c_ here"},
 		{"plain text", "nothing to see here", "nothing to see here"},
+		{"run of carets is unchanged", "^^^ will be broken into tickets", "^^^ will be broken into tickets"},
+		{"run of pluses is unchanged", "+++ will be broken into tickets", "+++ will be broken into tickets"},
 		{"empty", "", ""},
 	}
 	for _, tt := range tests {

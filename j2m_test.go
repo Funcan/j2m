@@ -63,6 +63,11 @@ func TestJiraToMD(t *testing.T) {
 		{"named link url with insert chars", "[Page|https://example.com/a+b+c]", "[Page](https://example.com/a+b+c)"},
 		{"formatting next to url", "*bold* https://example.com/a+b+c _it_", "**bold** https://example.com/a+b+c *it*"},
 		{"plain text", "nothing to see here", "nothing to see here"},
+		{"run of carets is not superscript", "^^^ will be broken into tickets", "^^^ will be broken into tickets"},
+		{"carets around spaced text are not superscript", "^^^ see above ^^^", "^^^ see above ^^^"},
+		{"run of pluses is not insert", "+++ will be broken into tickets", "+++ will be broken into tickets"},
+		{"pluses around spaced text are not insert", "1 + 2 + 3", "1 + 2 + 3"},
+		{"run of tildes is not subscript", "~~~ will be broken into tickets", "~~~ will be broken into tickets"},
 		{"empty", "", ""},
 	}
 	for _, tt := range tests {

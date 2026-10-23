@@ -50,16 +50,18 @@ func JiraToMD(str string) string {
 			re:   regexp.MustCompile(`\?\?((?:.[^?]|[^?].)+)\?\?`),
 			repl: "<cite>$1</cite>",
 		},
+		// Inserts, superscript and subscript need content that doesn't start
+		// or end with whitespace, so "^^^" or "1 + 2 + 3" are left alone
 		{ // Inserts
-			re:   regexp.MustCompile(`\+([^+]*)\+`),
+			re:   regexp.MustCompile(`\+([^\s+](?:[^+]*[^\s+])?)\+`),
 			repl: "<ins>$1</ins>",
 		},
 		{ // Superscript
-			re:   regexp.MustCompile(`\^([^^]*)\^`),
+			re:   regexp.MustCompile(`\^([^\s^](?:[^^]*[^\s^])?)\^`),
 			repl: "<sup>$1</sup>",
 		},
 		{ // Subscript
-			re:   regexp.MustCompile(`~([^~]*)~`),
+			re:   regexp.MustCompile(`~([^\s~](?:[^~]*[^\s~])?)~`),
 			repl: "<sub>$1</sub>",
 		},
 		{ // Strikethrough
