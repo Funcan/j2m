@@ -16,6 +16,12 @@ type jiration struct {
 func JiraToMD(str string) string {
 	leadingNewlines := len(str) - len(strings.TrimLeft(str, "\n"))
 	jirations := []jiration{
+		{ // JIRA has no raw HTML, so a literal < is escaped to stop Markdown
+			// treating it as a tag. This runs first so the < of generated
+			// links and tags isn't escaped
+			re:   regexp.MustCompile(`<`),
+			repl: `\<`,
+		},
 		{ // UnOrdered Lists
 			re: regexp.MustCompile(`(?m)^[ \t]*(\*+)\s+`),
 			repl: func(groups []string) string {
@@ -282,10 +288,6 @@ func MDToJira(str string) string {
 			re:   regexp.MustCompile(`\[([^\]]+)\]\(([^)]+)\)`),
 			repl: "[$1|$2]",
 		},
-		{ // Un-Named Link
-			re:   regexp.MustCompile(`<([^>]+)>`),
-			repl: "[$1]",
-		},
 		{ // Single Paragraph Blockquote
 			re:   regexp.MustCompile(`(?m)^>`),
 			repl: "bq.",
@@ -315,6 +317,18 @@ func MDToJira(str string) string {
 				codes = append(codes, "{{"+content+"}}")
 				return codePlaceholder(len(codes) - 1)
 			},
+		},
+		{ // Escaped < is a literal <, and protected so it can't start a link
+			re: regexp.MustCompile(`\\<`),
+			repl: func(groups []string) string {
+				codes = append(codes, "<")
+				return codePlaceholder(len(codes) - 1)
+			},
+		},
+		{ // Un-Named Link: only autolinks, which need a scheme or an email
+			// address, so other angle-bracketed text is left alone
+			re:   regexp.MustCompile(`<([a-zA-Z][a-zA-Z0-9+.-]*:[^\s<>]*|[^\s<>@\\]+@[^\s<>@\\]+)>`),
+			repl: "[$1]",
 		},
 		{ // URLs are protected too, as they can contain *, _ or ~.
 			// They end at the delimiters of links (), > and ])
