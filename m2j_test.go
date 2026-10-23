@@ -53,6 +53,7 @@ func TestMDToJira(t *testing.T) {
 		{"table after text without blank line is left alone", "text\n| H1 |\n| --- |\n| a |\n", "text\n| H1 |\n| --- |\n| a |\n"},
 		{"table at end of input", "| H1 |\n| --- |\n| a |\n| b |", "|| H1 ||\n| a |\n| b |"},
 		{"table with mismatched separator is left alone", "\n|H1|H2|\n| --- |\n|a|b|\n", "\n|H1|H2|\n| --- |\n|a|b|\n"},
+		{"table with empty header has no header", "| | |\n| --- | --- |\n|a|b|\n", "|a|b|\n"},
 		{"url with bold underscores", "see https://example.com/__init__/page here", "see https://example.com/__init__/page here"},
 		{"url with italic stars", "see https://example.com/*a*/b here", "see https://example.com/*a*/b here"},
 		{"url with bold stars", "see https://example.com/**a**/b here", "see https://example.com/**a**/b here"},

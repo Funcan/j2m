@@ -29,7 +29,7 @@ This fun toy was heavily inspired by the J2M project by Fokke Zandbergen (http:/
 * Superscripts
 * Subscripts
 * Single-paragraph blockquotes
-* Tables
+* Tables (Markdown requires a header row, so JIRA tables without one get an empty one)
 * Panels
 
 

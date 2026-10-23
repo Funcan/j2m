@@ -45,6 +45,9 @@ func TestJiraRoundTrip(t *testing.T) {
 		{"table followed by text", "||H1||\n|a|\n|b|\n\nafter"},
 		{"table after text", "before\n\n||H1||\n|a|\n|b|"},
 		{"table after leading blank lines", "\n\n||H1||\n|a|\n|b|"},
+		{"table without header", "|a|b|\n|c|d|"},
+		{"single cell table without header", "|a|"},
+		{"table without header after text", "before\n\n|a|\n| |\n|b|\n\nafter"},
 		{"mixed document", "h1. Title\n\nSome *bold* and _italic_.\n\n* item\n** nested\n\n{code:go}\nx := 1\n{code}\n"},
 		{"sample file", string(sample)},
 	}
