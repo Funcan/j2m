@@ -76,8 +76,10 @@ func JiraToMD(str string) string {
 			re:   regexp.MustCompile(`!(.+)!`),
 			repl: "![]($1)",
 		},
-		{ // Named Links
-			re:   regexp.MustCompile(`\[(.+?)\|(.+?)\]`),
+		{ // Named Links. JIRA Cloud smart links ([text|url|smart-link],
+			// smart-card or smart-embed) can't be represented in Markdown, so
+			// become plain named links
+			re:   regexp.MustCompile(`\[(.+?)\|(.+?)(?:\|smart-[a-z]+)?\]`),
 			repl: "[$1]($2)",
 		},
 		{ // Single Paragraph Blockquote

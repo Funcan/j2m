@@ -21,6 +21,7 @@ This fun toy was heavily inspired by the J2M project by Fokke Zandbergen (http:/
 * Inline preformatted text spans
 * Un-named links
 * Named links
+* JIRA Cloud smart links (converted to plain named links, so don't survive a round trip)
 * Monospaced Text
 * ~~Citations~~ (currently kinda buggy)
 * Strikethroughs
