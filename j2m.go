@@ -107,8 +107,8 @@ func JiraToMD(str string) string {
 		},
 	}
 
-	// Code is converted up front and swapped for placeholders, so that the
-	// jirations can't alter its contents
+	// Code and URLs are converted up front and swapped for placeholders, so
+	// that the jirations can't alter their contents
 	codes := []string{}
 	codeJirations := []jiration{
 		{ // Code Block
@@ -132,6 +132,14 @@ func JiraToMD(str string) string {
 			repl: func(groups []string) string {
 				_, content := groups[0], groups[1]
 				codes = append(codes, "`"+content+"`")
+				return codePlaceholder(len(codes) - 1)
+			},
+		},
+		{ // URLs are protected too, as they often contain +, -, _, ^ or ~.
+			// They end at the delimiters of links (| and ]) and images (!)
+			re: regexp.MustCompile(`\b[a-zA-Z][a-zA-Z0-9+.-]*://[^\s|\[\]!]+`),
+			repl: func(groups []string) string {
+				codes = append(codes, groups[0])
 				return codePlaceholder(len(codes) - 1)
 			},
 		},
@@ -280,8 +288,8 @@ func MDToJira(str string) string {
 		},
 	}
 
-	// Code is converted up front and swapped for placeholders, so that the
-	// jirations can't alter its contents
+	// Code and URLs are converted up front and swapped for placeholders, so
+	// that the jirations can't alter their contents
 	codes := []string{}
 	codeJirations := []jiration{
 		{ // Named/Un-Named Code Block
@@ -301,6 +309,14 @@ func MDToJira(str string) string {
 			repl: func(groups []string) string {
 				_, content := groups[0], groups[1]
 				codes = append(codes, "{{"+content+"}}")
+				return codePlaceholder(len(codes) - 1)
+			},
+		},
+		{ // URLs are protected too, as they can contain *, _ or ~.
+			// They end at the delimiters of links (), > and ])
+			re: regexp.MustCompile(`\b[a-zA-Z][a-zA-Z0-9+.-]*://[^\s)>\]]+`),
+			repl: func(groups []string) string {
+				codes = append(codes, groups[0])
 				return codePlaceholder(len(codes) - 1)
 			},
 		},
