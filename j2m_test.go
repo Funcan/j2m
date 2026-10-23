@@ -57,6 +57,8 @@ func TestJiraToMD(t *testing.T) {
 		{"leading blank line before table is kept", "\n||H1||\n|a|", "\n|H1|\n| --- |\n|a|"},
 		{"leading blank lines before text are kept", "\n\nhello", "\n\nhello"},
 		{"table with leading spaces", "  ||H1||\n  |a|", "|H1|\n| --- |\n|a|"},
+		{"table without header", "|a|b|\n|c|d|", "| | |\n| --- | --- |\n|a|b|\n|c|d|"},
+		{"table without header after text", "text\n\n|a|b|\n\nafter", "text\n\n\n| | |\n| --- | --- |\n|a|b|\n\nafter"},
 		{"url with insert chars", "See https://example.com/display/Space/2024-Feb-08+Gmail+account+locked for details", "See https://example.com/display/Space/2024-Feb-08+Gmail+account+locked for details"},
 		{"url with strikethrough chars", "a -b https://example.com/x- c", "a -b https://example.com/x- c"},
 		{"url with italic chars", "see https://example.com/_private_/page", "see https://example.com/_private_/page"},

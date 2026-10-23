@@ -115,6 +115,20 @@ func JiraToMD(str string) string {
 			re:   regexp.MustCompile(`(?m)^[ \t]*\|`),
 			repl: "|",
 		},
+		{ // JIRA tables needn't have a header row, but Markdown tables must,
+			// so headerless tables get an empty one
+			re: regexp.MustCompile(`(?m)^(?:\|.*\|[ \t]*(?:\n|\z))+`),
+			repl: func(groups []string) string {
+				block := groups[0]
+				lines := strings.Split(block, "\n")
+				delimiterRe := regexp.MustCompile(`^\|(?:\s*:?-{3,}:?\s*\|)+[ \t]*$`)
+				if len(lines) > 1 && delimiterRe.MatchString(lines[1]) {
+					return block
+				}
+				cells := strings.Count(strings.TrimRight(lines[0], " \t"), "|") - 1
+				return "\n" + strings.Repeat("| ", cells) + "|\n" + strings.Repeat("| --- ", cells) + "|\n" + block
+			},
+		},
 	}
 
 	// Code and URLs are converted up front and swapped for placeholders, so
@@ -197,6 +211,19 @@ func MDToJira(str string) string {
 				}
 				if len(headers) != len(separators) {
 					return match
+				}
+
+				// An empty header is how JiraToMD represents a JIRA table
+				// without one
+				emptyHeader := true
+				for _, header := range headers {
+					if strings.TrimSpace(header) != "" {
+						emptyHeader = false
+						break
+					}
+				}
+				if emptyHeader {
+					return rowstr
 				}
 
 				rows := strings.Split(strings.TrimSuffix(rowstr, "\n"), "\n")
